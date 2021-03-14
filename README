@@ -1,0 +1,38 @@
+1) Create db first:
+	-required mysql installed
+	-access mysql via root : (if succesfully installed type mysql in command promp)
+	-first create user : CREATE USER 'panosg'@'localhost' IDENTIFIED BY '%PaGou17846';
+	(user: panosg,password: %PaGou17846 )
+	-want to give all privileges temporarily to the user so : GRANT ALL PRIVILEGES ON *.* TO 'panosg'@'localhost';
+	(SOS!!! ALWAYS before closing mysql we must give back privileges on root so we can access mysql : 
+		GRANT ALL PRIVILEGES ON *.* TO  'root'@'localhost'; )
+- After giving privileges to user create a db in this project i created a 'Mydb' database : CREATE DATABASE MyDB;
+
+2) Create an HTTP server for the login form :
+	-the code is in form1.py
+	-HTTP server listens on port 3000
+	-Access server via browser typing localhost:3000
+	-Login form has 2 buttons sign in and sign up:
+		sign up to give access and store a new user in the database
+		sign in to give access to an existed user in the database
+	-There are different scenarios in each case:
+		for both sign in and sign up we have the scenarios of giving a username and not giving a password
+		and also the opposite scenario(giving a password and not giving a username)(in that case a redirection is made to the login 		form again)
+		Specificaly in the sign in scenario we have the cases of:
+		giving correct username but wrong password
+		giving a username that don't exist in the database
+3)create a database server:
+	-the code is in DB_server.py
+	-the db server must communicate with the http server every time a request is made (only in the case of sign in , sign up )
+	- database server listens on port 5000 
+4)create a database:
+	-the code is in DB.py
+	-Create a db instance due to your user and database info 
+	-Create a table inside the database to store information about clients(name,hash,salt)
+	- the management of the database is made on the db server side
+
+5) Encrypt passwords before storing them:
+	-After retrieving info of a new user don't store the password in the db but store
+	a hash of the hash of the password plus a given random salt and the  given random salt
+	- hash = hash of (salt + hash of password)
+	- the code of the encryption algorithm is in randtest.py
